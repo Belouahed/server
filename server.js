@@ -5,10 +5,13 @@ const cors = require("cors");
 
 const app = express();
 app.use(express.json());
-app.use(cors());
+app.use(cors({
+  origin: ["http://nb1.ma", "https://nb1.ma", "http://www.nb1.ma", "https://www.nb1.ma"], 
+  methods: "GET,POST,PUT,DELETE",
+  credentials: true,
+}));
 const User = require("./models/User");
 
-// إضافة مستخدم جديد
 app.post("/users", async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -20,7 +23,6 @@ app.post("/users", async (req, res) => {
   }
 });
 
-// جلب جميع المستخدمين
 app.get("/users", async (req, res) => {
   try {
     const users = await User.find();
@@ -30,7 +32,6 @@ app.get("/users", async (req, res) => {
   }
 });
 
-// حذف مستخدم حسب الـ ID
 app.delete("/users/:id", async (req, res) => {
   try {
     const { id } = req.params;
